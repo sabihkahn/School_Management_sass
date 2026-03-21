@@ -2,6 +2,9 @@ import express from 'express'
 import 'dotenv/config'
 import {connectDB} from './config/db.js'
 import cors from 'cors'
+import authRoutes from './routes/authRoutes.js'
+import cookieparser from 'cookie-parser'
+
 const app = express()
 
 
@@ -11,6 +14,10 @@ app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({extended:true}))
 
+
+// Routes
+
+app.use('/api/auth',authRoutes)
 
 app.get('/',(req,res)=>{
     res.status(200).send({message:"server running successfully"})
