@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import Schoolmodel from "../model/schoolschema.js";
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { genJwt } from "../libs/genrateToken.js";
+
+
 export const Register = async (req, res) => {
   try {
     let { schoolName, address, classes, schoolLogo, email, password } = req.body;
@@ -69,6 +73,15 @@ export const Register = async (req, res) => {
       schoolName, address, classes, schoolLogo, email, password: hashedpass
     })
     await schooldata.save()
+    const userid  =  schooldata._id
+    const token  =  genJwt({userid})
+    
+
+      res.cookie("jwt",token,{
+        httpOnly: true,
+        maxAge:90000000,
+        sameSite: 'strict'
+    })
 
     return res.status(200).json({
       message: "User created successfully", schooldata: {
@@ -85,3 +98,66 @@ export const Register = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+export const login = async(req,res)=>{
+  try {
+
+    const {email,password} = req.body
+
+    if(!email || !password){
+      return res.status(400).send({message:"all fields are required "})
+    }
+    
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,12}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message: "Password must contain at least one letter and one number",
+      });
+    }
+
+    // Email validation hard regex work 100 percent 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    const schooldata  = await Schoolmodel.findOne({email})
+
+    if(!schooldata){
+      return res.status(400).send({message:"this school does't exist"})
+    }
+
+    const isPasswordMached =await bcrypt.compare(password,schooldata.password)
+
+    if(!isPasswordMached){
+      return res.status(400).send({message:"Invalid password"})
+    }
+
+        const userid  =  schooldata._id
+        const token  =  genJwt({userid})
+    
+
+      res.cookie("jwt",token,{
+        httpOnly: true,
+        maxAge:90000000,
+        sameSite: 'strict'
+    })
+
+
+     return res.status(200).json({
+      message: "logined successfully",
+      schooldata: {
+        schoolName: schooldata.schoolName,
+        email: schooldata.email,
+        schoolLogo: schooldata.schoolLogo,
+        address: schooldata.address,
+        id: schooldata._id
+      }
+    });
+    
+  } catch (error) {
+    console.log("error in login controller: ",error)
+    res.status(500).send({message:"internal server error"})
+  }
+}
