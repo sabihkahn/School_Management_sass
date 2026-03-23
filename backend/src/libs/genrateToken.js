@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-
+ 
 export const genJwt = (userid) =>{
     try {
         if(!userid){
@@ -8,7 +8,7 @@ export const genJwt = (userid) =>{
 
         const token = jwt.sign({userid},process.env.JWT_Secret,{ expiresIn: '7d' })
         return token
-
+        
         
     } catch (error) {
         console.log("error",error);

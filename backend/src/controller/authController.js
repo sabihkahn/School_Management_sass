@@ -74,9 +74,9 @@ export const Register = async (req, res) => {
     })
     await schooldata.save()
     const userid  =  schooldata._id
-    const token  =  genJwt({userid})
+    const token  =  genJwt(userid)
     
-
+    
       res.cookie("jwt",token,{
         httpOnly: true,
         maxAge:90000000,
@@ -135,7 +135,7 @@ export const login = async(req,res)=>{
     }
 
         const userid  =  schooldata._id
-        const token  =  genJwt({userid})
+        const token  =  genJwt(userid)
     
 
       res.cookie("jwt",token,{
@@ -159,5 +159,47 @@ export const login = async(req,res)=>{
   } catch (error) {
     console.log("error in login controller: ",error)
     res.status(500).send({message:"internal server error"})
+  }
+}
+
+export const check = async(req,res)=>{
+  try {
+
+    const id = req.userid
+    if(!id){
+      return res.status(400).send({message:"id is not provided"})
+    }
+    const schooldata = await Schoolmodel.findById(id).select("-password")
+    res.status(200).send({message:"validation complete ",schooldata})
+
+    
+  } catch (error) {
+    console.log("error in check controllerr in authController ",error)
+    res.status(500).send({message:"Internal server error"})
+  }
+}
+
+export const update = async (req,res) =>{
+  try {
+      const {schoolName,password} = req.body
+     const schoolnewName = schoolName
+     const id = req.userid
+    let newpasswordhash = null
+    if(password){
+      newpasswordhash = await bcrypt.hash(password,7)
+    }
+     const schooldata = await Schoolmodel.findByIdAndUpdate(id,{
+     schoolName:schoolnewName,
+     password:newpasswordhash
+     })
+     if(!schooldata){
+      return res.status(400).send({message:"No user found"})
+     }
+     
+     res.status(202).send({message:"updated successfully",schooldata})
+
+  } catch (error) {
+    console.log("error occur in update controller in authcontrollerr",error)
+    res.status(500).send("Internal server error")
   }
 }
