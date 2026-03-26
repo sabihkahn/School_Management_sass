@@ -4,20 +4,23 @@ import {connectDB} from './config/db.js'
 import cors from 'cors'
 import authRoutes from './routes/authRoutes.js'
 import cookieparser from 'cookie-parser'
+import studentroutes from './routes/studentRoutes.js'
 
 const app = express()
 
 
 // middleware
 
+app.use(cookieparser())
 app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({extended:true}))
-app.use(cookieparser())
 
 // Routes
 
 app.use('/api/auth',authRoutes)
+app.use('/api',studentroutes)
+
 
 app.get('/',(req,res)=>{
   

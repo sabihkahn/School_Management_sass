@@ -5,8 +5,11 @@ import { Authorization } from '../middleware/AuthMiddleware.js'
 const router = express.Router()
 
 router.post("/register",Register)
+
 router.post("/login",login)
+
 router.get('/check',Authorization,check)
+
 router.put('/update',Authorization,update)
 
 

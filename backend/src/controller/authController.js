@@ -79,8 +79,9 @@ export const Register = async (req, res) => {
     
       res.cookie("jwt",token,{
         httpOnly: true,
-        maxAge:90000000,
-        sameSite: 'strict'
+  maxAge: 90000000,
+  sameSite: 'lax', // not 'strict'
+  secure: false
     })
 
     return res.status(200).json({
@@ -109,6 +110,7 @@ export const login = async(req,res)=>{
       return res.status(400).send({message:"all fields are required "})
     }
     
+    
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,12}$/;
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
@@ -127,6 +129,9 @@ export const login = async(req,res)=>{
     if(!schooldata){
       return res.status(400).send({message:"this school does't exist"})
     }
+    if (!schooldata.password) {
+  return res.status(400).send({ message: "Password not set. Please reset password." });
+}
 
     const isPasswordMached =await bcrypt.compare(password,schooldata.password)
 
@@ -139,9 +144,10 @@ export const login = async(req,res)=>{
     
 
       res.cookie("jwt",token,{
-        httpOnly: true,
-        maxAge:90000000,
-        sameSite: 'strict'
+       httpOnly: true,
+  maxAge: 90000000,
+  sameSite: 'lax', // not 'strict'
+  secure: false
     })
 
 
@@ -179,27 +185,58 @@ export const check = async(req,res)=>{
   }
 }
 
-export const update = async (req,res) =>{
+export const update = async (req, res) => {
   try {
-      const {schoolName,password} = req.body
-     const schoolnewName = schoolName
-     const id = req.userid
-    let newpasswordhash = null
-    if(password){
-      newpasswordhash = await bcrypt.hash(password,7)
+    const { schoolName, password } = req.body;
+    const id = req.userid;
+
+      // Validate password
+    if (password.length < 8 || password.length > 12) {
+      return res.status(400).json({
+        message: "Password must be between 8 and 12 characters",
+      });
     }
-     const schooldata = await Schoolmodel.findByIdAndUpdate(id,{
-     schoolName:schoolnewName,
-     password:newpasswordhash
-     })
-     if(!schooldata){
-      return res.status(400).send({message:"No user found"})
-     }
-     
-     res.status(202).send({message:"updated successfully",schooldata})
+
+    // Strong password  hard regex to understand work 100 percemt
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,12}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message: "Password must contain at least one letter and one number",
+      });
+    }
+
+  
+
+    let updateFields = {};
+
+    if (schoolName) {
+      updateFields.schoolName = schoolName;
+    }
+
+    if (password) {
+      updateFields.password = await bcrypt.hash(password, 7);
+    }
+
+    const schooldata = await Schoolmodel.findByIdAndUpdate(
+      id,
+      { $set: updateFields },
+     { returnDocument: 'after' }
+    );
+
+    if (!schooldata) {
+      return res.status(400).send({ message: "No user found" });
+    }
+
+
+    res.status(200).send({
+      message: "updated successfully",
+      schooldata,
+    });
 
   } catch (error) {
-    console.log("error occur in update controller in authcontrollerr",error)
-    res.status(500).send("Internal server error")
+    console.log("error occur in update controller", error);
+    res.status(500).send("Internal server error");
   }
-}
+};
+
+
