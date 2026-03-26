@@ -196,3 +196,48 @@ export const deletestudent = async (req, res) => {
 
     }
 }
+
+
+export const updateStudent = async (req,res) => {
+    try {
+
+        const id = req.params.id
+        let { name, email, classin, fatherName, motherName, lastPaidDate, coarse, image, parentsNumber } = req.body;
+        
+        const student = await Studentmodel.findByIdAndUpdate(id,{ name, email, classin, fatherName, motherName, lastPaidDate, coarse, image, parentsNumber })
+        if(!student){
+            return res.status(400).send({message:" can't find student "})
+        }
+        res.status(200).send({message:"Student updated successfull"})
+
+    } catch (error) {
+
+        console.log("an error occur in updatestudent controller ==> ",error)
+        res.status(500).send({message:"Internal server error"})
+
+    }
+}
+
+
+export const setstudentpaid = async (req,res) => {
+    try {
+        const id = req.params.id
+
+        let lastPaidDate = new Date()
+         const formattedDate = new Date(lastPaidDate);
+        if (isNaN(formattedDate.getTime())) {
+            return res.status(400).send({ message: "Invalid date format for lastPaidDate" });
+        }
+
+        const student = await Studentmodel.findByIdAndUpdate(id,{lastPaidDate:formattedDate})
+         if(!student){
+            return res.status(400).send({message:"student not found"})
+         }
+
+        res.status(200).send({message:"student fees has updated"})
+
+    } catch (error) {
+          console.log("an error occur in setstudentpaid controller ==> ",error)
+        res.status(500).send({message:"Internal server error"})
+    }
+}
