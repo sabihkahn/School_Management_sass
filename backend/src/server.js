@@ -6,8 +6,21 @@ import authRoutes from './routes/authRoutes.js'
 import cookieparser from 'cookie-parser'
 import studentroutes from './routes/studentRoutes.js'
 import teacherRoutes from './routes/teacherRouters.js'
+import dashboardRoutes from './routes/dashboardRoutes.js'
+import {rateLimit} from 'express-rate-limit'
+
 const app = express()
 
+const limiter = rateLimit({
+  windowMs:  7 * 60 * 1000, // in every 5 minutes 100 req can be fired
+  max: 100, // 100 requests per window
+  message: 'Too many requests, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply to all requests
+app.use(limiter);
 
 // middleware
 
@@ -21,6 +34,8 @@ app.use(express.urlencoded({extended:true}))
 app.use('/api/auth',authRoutes)
 app.use('/api',studentroutes)
 app.use('/api',teacherRoutes)
+app.use('/api',dashboardRoutes)
+
 
 app.get('/',(req,res)=>{
   

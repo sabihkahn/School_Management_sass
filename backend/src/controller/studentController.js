@@ -251,16 +251,44 @@ export const setstudentpaid = async (req,res) => {
 export const allStudentscount = async (req,res) => {
   try {
     const id1 = req.userid 
+
     const allstudents = await Studentmodel.countDocuments({
       SchoolID: id1
     });
 
     res.status(200).send({TotalStudentCount:allstudents})
+
   } catch (error) {
+
     console.log("error in allStudents controller ",error)
+
     res.status(500).send({message:" Internal server error "})
   }
 }
 
+export const searchstudentByname = async (req,res) => {
+    try {
+    const id = req.userid
+    const name = req.query.name
+
+    if(!name){
+        return res.status(400).send({mesage:"name is required to search"})
+    }
+    
+    const students = await Studentmodel.find({
+        name:{$regex:name,$options:'i'},
+        SchoolID:id
+    })
+
+   if(!students || students.length == 0){
+    return res.status(400).send({message:"cant find any students based on the name "})
+   }
+
+   res.status(200).send(students)
+    } catch (error) {
+        console.log("error occur in searchStudentByname")
+        res.status(500).send({message:"Internal server error"})
+    }
+}
 
 
