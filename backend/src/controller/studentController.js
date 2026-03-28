@@ -241,3 +241,21 @@ export const setstudentpaid = async (req,res) => {
         res.status(500).send({message:"Internal server error"})
     }
 }
+
+
+export const allStudentscount = async (req,res) => {
+  try {
+    const id1 = req.userid 
+    const allstudents = await Studentmodel.countDocuments({
+      SchoolID: id1
+    });
+
+    res.status(200).send({TotalStudentCount:allstudents})
+  } catch (error) {
+    console.log("error in allStudents controller ",error)
+    res.status(500).send({message:" Internal server error "})
+  }
+}
+
+
+
