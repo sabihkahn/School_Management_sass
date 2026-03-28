@@ -45,18 +45,23 @@ export const getallstudents = async (req, res) => {
         const id = req.userid
 
         const { page = 1, limit = 10 } = req.query;
+        
         const skip = (page - 1) * limit;
 
         if (!page || !limit) {
+        
             console.log("Nothing provided for limit and page ")
             return res.status(400).send({ message: "cant get students" })
 
         }
 
         const students = await Studentmodel.find({ SchoolID: id }).skip(skip).limit(limit)
+
         if (!students) {
             return res.status(400).send({ message: "no sudent found" })
         }
+
+
         res.status(200).send(students)
 
 

@@ -12,7 +12,7 @@ const teachermodel = new mongoose.Schema(
             Salary:{type:Number,required:true},
             subject:{type:String,required:true}
         }
-
+ 
 
 
 ,{ timestamps: true })

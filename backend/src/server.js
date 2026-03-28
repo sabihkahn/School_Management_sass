@@ -5,7 +5,7 @@ import cors from 'cors'
 import authRoutes from './routes/authRoutes.js'
 import cookieparser from 'cookie-parser'
 import studentroutes from './routes/studentRoutes.js'
-
+import teacherRoutes from './routes/teacherRouters.js'
 const app = express()
 
 
@@ -20,7 +20,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.use('/api/auth',authRoutes)
 app.use('/api',studentroutes)
-
+app.use('/api',teacherRoutes)
 
 app.get('/',(req,res)=>{
   
