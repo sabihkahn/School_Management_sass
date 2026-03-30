@@ -26,7 +26,7 @@ app.use(limiter);
 
 app.use(cookieparser())
 app.use(express.json())
-app.use(cors())
+app.use(cors({origin:process.env.FRONTEND_URL,credentials:true}))
 app.use(express.urlencoded({extended:true}))
 
 // Routes
@@ -36,6 +36,7 @@ app.use('/api',studentroutes)
 app.use('/api',teacherRoutes)
 app.use('/api',dashboardRoutes)
 
+// test api  for  health check
 
 app.get('/',(req,res)=>{
   
