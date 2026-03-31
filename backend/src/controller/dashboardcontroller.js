@@ -17,9 +17,9 @@ export const Dashboardcontroller = async (req, res) => {
             lastPaidDate: { $gt: thirtyDaysAgo }
         });
         const unpaidStudets  = totalStudents - paidCount
-        const schooldata = await Schoolmodel.findById(schoolid).select("-password")
+       
         
-        res.status(200).send({totalStudents,totalTeacher,unpaidStudets,paidCount,schooldata})
+        res.status(200).send({totalStudents,totalTeacher,unpaidStudets,paidCount})
 
     } catch (error) {
         console.log("error occur in Dashboard controller ",error)

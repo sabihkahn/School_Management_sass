@@ -9,6 +9,11 @@ export const Register = async (req, res) => {
   try {
     let { schoolName, address, classes, schoolLogo, email, password } = req.body;
 
+  if (schoolName.length > 50) return res.status(400).send({ message: "School name too long" });
+if (address.length > 100) return res.status(400).send({ message: "Address too long" });
+ if (typeof classes !== "number" || isNaN(classes)) {
+  return res.status(400).send({ message: "Classes must be a valid number" });
+}
     // Trim all string fields
     schoolName = schoolName?.trim();
     address = address?.trim();
@@ -240,3 +245,22 @@ export const update = async (req, res) => {
 };
 
 
+export const logout  = async (req,res) =>{
+try {
+  
+res.cookie("jwt", "", { 
+      httpOnly: true, 
+      expires: new Date(0),
+      sameSite: "strict" 
+    });
+
+    
+    return res.status(200).json({ message: "Logged out successfully" });
+
+} catch (error) {
+
+  console.log("error")
+  res.status(500).send({message:"Internal server error"})
+
+}
+}
