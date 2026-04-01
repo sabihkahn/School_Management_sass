@@ -171,7 +171,7 @@ export const login = async(req,res)=>{
     console.log("error in login controller: ",error)
     res.status(500).send({message:"internal server error"})
   }
-}
+} 
 
 export const check = async(req,res)=>{
   try {

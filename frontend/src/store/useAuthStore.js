@@ -10,8 +10,10 @@ export const axiosInstance = axios.create({
 });
 
 export const useAuthStore = create((set) => ({
-    User: null,
+   User: null,
     isCheckingAuth: true,
+    Data: null,
+    isDashboardLoading: false,
 
     // Set user manually if needed
     setUser: (data) => set({ User: data }),
@@ -65,5 +67,21 @@ export const useAuthStore = create((set) => ({
             return false;
         }
     },
+   
+fetchDashboardData: async () => {
+        set({ isDashboardLoading: true }); 
+        try {
+          
+            const res = await axiosInstance.get("/dashboradData");
+            
+     
+            set({ Data: res.data });
+        } catch (error) {
+            console.error("Error fetching dashboard data:", error);
+            toast.error("Failed to load dashboard statistics");
+        } finally {
+            set({ isDashboardLoading: false }); 
+        }
+    }
 
 }));
