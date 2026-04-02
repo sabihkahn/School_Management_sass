@@ -31,7 +31,7 @@ export const useAuthStore = create((set) => ({
             return false;
         }
     },
-
+ 
 
     checkAuth: async () => {
         try {

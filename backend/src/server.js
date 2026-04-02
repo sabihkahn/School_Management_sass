@@ -12,8 +12,8 @@ import {rateLimit} from 'express-rate-limit'
 const app = express()
 
 const limiter = rateLimit({
-  windowMs:  7 * 60 * 1000, // in every 5 minutes 100 req can be fired
-  max: 100, // 100 requests per window
+  windowMs:  5 * 60 * 1000, // in every 5 minutes 100 req can be fired
+  max: 50, // 100 requests per window
   message: 'Too many requests, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
