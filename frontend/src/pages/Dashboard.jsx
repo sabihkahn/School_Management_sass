@@ -5,7 +5,7 @@ import { useAuthStore } from '../store/useAuthStore';
 
 const Dashboard = () => {
   // Pull what we need directly from the store
-  const { Data, fetchDashboardData, isLoggingIn } = useAuthStore(); 
+  const { Data, fetchDashboardData, isLoggingIn ,User} = useAuthStore(); 
   // Note: I assume you have a loading state in your store. 
   // If not, I'll use a local one below.
   const [localLoading, setLocalLoading] = React.useState(true);
@@ -40,9 +40,9 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4  md:p-8">
-      <header className="mb-6 mt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-7">
+      <header className="mb-6 mt-0 flex flex-col md:flex-row md:items-center md:justify-between gap-7">
      
-        <div className="bg-white px-12 py-3 mt-3 rounded-lg shadow-sm border border-gray-200 text-sm font-medium text-gray-600">
+        <div className="bg-white px-12 py-3 mt-0 rounded-lg shadow-sm border border-gray-200 text-sm font-medium text-gray-600">
           Last Updated: {new Date().toLocaleTimeString()}
         </div>
       </header>

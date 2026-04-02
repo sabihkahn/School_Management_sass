@@ -1,28 +1,31 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom"; // Added useLocation
 import { Toaster } from 'react-hot-toast';
-import { Loader2 } from "lucide-react"; // For a nice loading spinner
+import { Loader2 } from "lucide-react";
 
 // Store & Pages
 import { useAuthStore } from './store/useAuthStore';
 import Home from "./pages/Home";
 import Privacy from "./pages/Privacy";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Feature from "./pages/Feature";
 import Register from "./pages/Register";
+import NewDashboard from "./pages/NewDashboard";
+import StudentManagement from "./pages/StudentManagement";
 
 const App = () => {
   const { User, checkAuth, isCheckingAuth } = useAuthStore();
+  const location = useLocation(); // Get current route
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
-  // IMPORTANT: Show a loader while the app checks the cookie.
-  // Otherwise, the protected route will redirect to /login before the check finishes.
+  // Check if the current route is a dashboard route
+  const isDashboard = location.pathname.startsWith("/dashboard");
+
   if (isCheckingAuth) {
     return (
       <div className="h-screen flex items-center justify-center bg-[#f8f9fa]">
@@ -34,26 +37,28 @@ const App = () => {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
-      <Header />
+      
+    
+      {!isDashboard && <Header />}
 
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/features" element={<Feature />} />
+      <main className={isDashboard ? "" : "min-h-[80vh]"}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/features" element={<Feature />} />
 
-        {/* Redirect away from Login/Register if already logged in */}
-        <Route path="/login" element={!User ? <Login /> : <Navigate to="/dashboard" />} />
-        <Route path="/register" element={!User ? <Register /> : <Navigate to="/dashboard" />} />
+          <Route path="/login" element={!User ? <Login /> : <Navigate to="/dashboard" />} />
+          <Route path="/register" element={!User ? <Register /> : <Navigate to="/dashboard" />} />
 
-        {/* Protected Dashboard */}
-        <Route path="/dashboard" element={User ? <Dashboard /> : <Navigate to="/login" />} />
-        
-        {/* Catch-all */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+          {/* Protected Dashboard Routes */}
+          <Route path="/dashboard/*" element={User ? <NewDashboard /> : <Navigate to="/login" />} />
+          <Route path="/dashboard/students" element={<StudentManagement />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </main>
 
-      <Footer />
+      
+      {!isDashboard && <Footer />}
     </>
   );
 };

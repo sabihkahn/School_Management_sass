@@ -1,13 +1,14 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import baseUrl from '../BaseUrl';
+import {axiosInstance} from '../api/AxiosInstance.jsx'
 import toast from 'react-hot-toast';
 
 // Create an axios instance that sends cookies automatically
-export const axiosInstance = axios.create({
-    baseURL: `${baseUrl}/api`,
-    withCredentials: true, // Crucial for reading/setting cookies
-});
+// export const axiosInstance = axios.create({
+//     baseURL: `${baseUrl}/api`,
+//     withCredentials: true, // Crucial for reading/setting cookies
+// });
 
 export const useAuthStore = create((set) => ({
    User: null,
