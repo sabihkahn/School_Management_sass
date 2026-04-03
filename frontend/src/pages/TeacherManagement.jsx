@@ -74,11 +74,11 @@ export default function TeacherManagement() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F0F7FF] text-slate-900">
+    <div className="flex min-h-screen bg-[#ffffff] text-slate-900">
       <Toaster position="top-right" />
       <Sidebar />
 
-      <main className="flex-1 p-6 lg:p-10">
+      <main className="flex-1 overflow-y-scroll h-150 p-6 lg:p-10">
         {/* Header */}
         <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -172,9 +172,9 @@ export default function TeacherManagement() {
                         </td>
                         <td className="px-6 py-4 text-sm font-bold text-slate-600">${t.Salary}</td>
                         <td className="px-6 py-4 text-right">
-                          <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="flex justify-end gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
                             <button onClick={(e) => { e.stopPropagation(); setForm(t); setEditingId(t._id); window.scrollTo({top:0, behavior:'smooth'})}} className="p-2 text-blue-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg"><Edit2 size={16}/></button>
-                            <button onClick={(e) => handleDelete(e, t._id)} className="p-2 text-red-300 hover:text-red-500 hover:bg-red-50 rounded-lg"><Trash2 size={16}/></button>
+                            <button onClick={(e) => handleDelete(e, t._id)} className="p-2 text-red-400 hover:text-red-500 hover:bg-red-50 rounded-lg"><Trash2 size={16}/></button>
                           </div>
                         </td>
                       </motion.tr>

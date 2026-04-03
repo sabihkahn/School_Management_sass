@@ -8,7 +8,7 @@ return (
       <Sidebar />
 
       {/* Main Content Area */}
-      <main className='flex-1 flex flex-col min-w-0 overflow-hidden'>
+      <main className='flex-1 flex flex-col min-w-0 overflow-y-scroll h-160'>
         <div className='flex-1 overflow-y-auto'>
           <Dashboard />
         </div>

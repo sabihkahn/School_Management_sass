@@ -12,16 +12,21 @@ import {
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {useAuthStore} from '../store/useAuthStore'
+
 const Sidebar = () => {
+
   const [isOpen, setIsOpen] = useState(false);
+
   const location = useLocation();
-const {User} = useAuthStore()
+
+const {User,logout} = useAuthStore()
+
+
 
   const menuItems = [
     { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
     { name: 'Student Management', icon: <Users size={20} />, path: '/dashboard/students' },
     { name: 'Teacher Management', icon: <GraduationCap size={20} />, path: '/dashboard/teacher' },
-    { name: 'Academic Records', icon: <BookOpen size={20} />, path: '/dashboard/records' },
     { name: 'Settings', icon: <Settings size={20} />, path: '/dashboard/settings' },
   ];
 
@@ -97,7 +102,7 @@ const {User} = useAuthStore()
 
         {/* Bottom Profile/Logout Section */}
         <div className="p-4 border-t border-gray-100">
-          <button className="flex items-center gap-3 w-full px-4 py-3 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors group">
+          <button onClick={logout} className="flex items-center gap-3 w-full px-4 py-3 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors group">
             <LogOut size={20} className="group-hover:translate-x-1 transition-transform" />
             <span className="font-medium">Logout</span>
           </button>

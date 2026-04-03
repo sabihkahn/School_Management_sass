@@ -196,11 +196,15 @@ export const update = async (req, res) => {
     const id = req.userid;
 
       // Validate password
-    if (password.length < 8 || password.length > 12) {
-      return res.status(400).json({
-        message: "Password must be between 8 and 12 characters",
-      });
-    }
+      if(password){
+
+        if (password.length < 8 || password.length > 12) {
+          return res.status(400).json({
+            message: "Password must be between 8 and 12 characters",
+          });
+        }
+
+      }
 
     // Strong password  hard regex to understand work 100 percemt
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,12}$/;

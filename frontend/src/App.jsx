@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import NewDashboard from "./pages/NewDashboard";
 import StudentManagement from "./pages/StudentManagement";
 import TeacherManagement from './pages/TeacherManagement'
+import Setting from "./pages/Setting";
 
 
 const App = () => {
@@ -53,9 +54,10 @@ const App = () => {
           <Route path="/register" element={!User ? <Register /> : <Navigate to="/dashboard" />} />
 
           {/* Protected Dashboard Routes */}
-          <Route path="/dashboard/*" element={User ? <NewDashboard /> : <Navigate to="/login" />} />
-          <Route path="/dashboard/students" element={<StudentManagement />} />
-          <Route path="/dashboard/teacher" element={<TeacherManagement />} />
+          <Route path="/dashboard" element={User ? <NewDashboard /> : <Navigate to="/login" />} />
+          <Route path="/dashboard/students" element={User ?<StudentManagement /> :  <Navigate to="/login" />} />
+          <Route path="/dashboard/teacher" element={User?<TeacherManagement /> : <Navigate to="/login" /> } />
+          <Route path="/dashboard/settings" element={User?<Setting /> : <Navigate to="/login" /> } />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>

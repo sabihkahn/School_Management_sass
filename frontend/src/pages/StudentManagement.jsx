@@ -57,10 +57,10 @@ const StudentManagement = () => {
   };
 
   return (
-    <div className='flex min-h-screen bg-[#F1F5F9] text-slate-900 font-sans'>
+    <div className='flex min-h-screen bg-[#ffffff] text-slate-900 font-sans'>
       <Sidebar />
 
-      <main className='flex-1 p-4 md:p-8 overflow-x-hidden'>
+      <main className='flex-1 overflow-y-scroll h-160 p-4 md:p-8 overflow-x-hidden'>
         <div className='flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4'>
           <div>
             <h1 className='text-3xl font-extrabold tracking-tight text-slate-950'>Student Directory</h1>
