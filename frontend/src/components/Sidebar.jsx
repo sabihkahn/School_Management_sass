@@ -16,10 +16,11 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 const {User} = useAuthStore()
+
   const menuItems = [
     { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
     { name: 'Student Management', icon: <Users size={20} />, path: '/dashboard/students' },
-    { name: 'Teacher Management', icon: <GraduationCap size={20} />, path: '/dashboard/teachers' },
+    { name: 'Teacher Management', icon: <GraduationCap size={20} />, path: '/dashboard/teacher' },
     { name: 'Academic Records', icon: <BookOpen size={20} />, path: '/dashboard/records' },
     { name: 'Settings', icon: <Settings size={20} />, path: '/dashboard/settings' },
   ];

@@ -14,6 +14,8 @@ import Feature from "./pages/Feature";
 import Register from "./pages/Register";
 import NewDashboard from "./pages/NewDashboard";
 import StudentManagement from "./pages/StudentManagement";
+import TeacherManagement from './pages/TeacherManagement'
+
 
 const App = () => {
   const { User, checkAuth, isCheckingAuth } = useAuthStore();
@@ -53,6 +55,7 @@ const App = () => {
           {/* Protected Dashboard Routes */}
           <Route path="/dashboard/*" element={User ? <NewDashboard /> : <Navigate to="/login" />} />
           <Route path="/dashboard/students" element={<StudentManagement />} />
+          <Route path="/dashboard/teacher" element={<TeacherManagement />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
